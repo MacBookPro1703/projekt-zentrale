@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  <meta name="apple-mobile-web-app-title" content="Projekt-Zentrale" />
+  <meta name="theme-color" content="#111111" />
+  <link rel="manifest" href="manifest.json" />
+  <link rel="apple-touch-icon" href="icon-192.png" />
+  <title>Projekt-Zentrale</title>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+    html,body{height:100%;background:#111;color:#fff;font-family:'DM Sans',sans-serif;overscroll-behavior:none;-webkit-tap-highlight-color:transparent;}
+    @keyframes fadeUp{from{opacity:0;transform:translateY(14px);}to{opacity:1;transform:translateY(0);}}
+    @keyframes spin{to{transform:rotate(360deg);}}
+    @keyframes pulse{0%,100%{box-shadow:0 0 0 10px rgba(232,69,69,0.15);}50%{box-shadow:0 0 0 20px rgba(232,69,69,0.04);}}
+    @keyframes blink{0%,100%{opacity:1;}50%{opacity:0;}}
+    .screen{display:none;padding:40px 20px 100px;min-height:100vh;overflow-y:auto;-webkit-overflow-scrolling:touch;}
+    .screen.active{display:block;}
+    .a1{animation:fadeUp .35s ease .05s both;}.a2{animation:fadeUp .35s ease .15s both;}.a3{animation:fadeUp .35s ease .25s both;}.a4{animation:fadeUp .35s ease .35s both;}
+    .lbl{font-family:'Syne',sans-serif;font-size:10px;letter-spacing:2.5px;text-transform:uppercase;color:#444;margin-bottom:6px;}
+    .ttl{font-family:'Syne',sans-serif;font-size:26px;font-weight:800;color:#fff;line-height:1.2;margin-bottom:24px;}
+    .co-sw{display:flex;gap:8px;margin-bottom:24px;}
+    .co-btn{flex:1;padding:10px;border-radius:14px;border:2px solid #2a2a2a;background:transparent;color:#555;font-family:'Syne',sans-serif;font-weight:700;font-size:11px;letter-spacing:.8px;cursor:pointer;text-transform:uppercase;transition:all .2s;}
+    .co-btn.ae{border-color:#c8a96e;background:#c8a96e18;color:#c8a96e;}
+    .co-btn.ak{border-color:#6e9ec8;background:#6e9ec818;color:#6e9ec8;}
+    .big-btn{width:100%;padding:26px 22px;border-radius:22px;border:2px solid #c8a96e;background:#c8a96e10;cursor:pointer;text-align:left;margin-bottom:14px;position:relative;display:block;transition:all .2s;}
+    .big-btn.k{border-color:#6e9ec8;background:#6e9ec810;}
+    .bb-icon{font-size:30px;margin-bottom:10px;}
+    .bb-title{font-family:'Syne',sans-serif;font-size:17px;font-weight:800;color:#fff;margin-bottom:4px;}
+    .bb-sub{font-family:'DM Sans',sans-serif;font-size:13px;color:#666;line-height:1.4;}
+    .bb-arr{position:absolute;right:18px;top:50%;transform:translateY(-50%);font-size:22px;color:#c8a96e;opacity:.6;}
+    .big-btn.k .bb-arr{color:#6e9ec8;}
+    .grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px;}
+    .card{background:#1a1a1a;border:2px solid #222;border-radius:18px;padding:18px 14px;cursor:pointer;text-align:left;transition:all .2s;width:100%;}
+    .ci{font-size:24px;margin-bottom:10px;}
+    .ct{font-family:'Syne',sans-serif;font-size:12px;font-weight:700;color:#fff;margin-bottom:4px;line-height:1.3;}
+    .cs{font-family:'DM Sans',sans-serif;font-size:11px;color:#555;line-height:1.4;}
+    .ind{background:#1a1a1a;border-radius:14px;padding:14px 16px;display:flex;align-items:center;gap:12px;}
+    .dot{width:10px;height:10px;border-radius:50%;flex-shrink:0;}
+    .de{background:#c8a96e;box-shadow:0 0 8px #c8a96e;}.dk{background:#6e9ec8;box-shadow:0 0 8px #6e9ec8;}
+    .ind-t{font-family:'DM Sans',sans-serif;font-size:13px;color:#666;}
+    .ind-n{font-weight:600;}.ne{color:#c8a96e;}.nk{color:#6e9ec8;}
+    .topbar{display:flex;justify-content:space-between;align-items:center;margin-bottom:28px;}
+    .back{background:#1a1a1a;border:none;color:#777;width:40px;height:40px;border-radius:50%;font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;}
+    .sl{font-family:'Syne',sans-serif;font-size:10px;font-weight:800;letter-spacing:2px;text-transform:uppercase;margin-bottom:10px;}
+    .sl.r{color:#e84545;}.sl.o{color:#f0a500;}.sl.b{color:#6e9ec8;}
+    .bi{background:#1a1a1a;border-radius:14px;padding:12px 14px;margin-bottom:8px;display:flex;gap:12px;align-items:flex-start;}
+    .bi.r{border-left:3px solid #e84545;}.bi.o{border-left:3px solid #f0a500;}.bi.b{border-left:3px solid #6e9ec8;}
+    .be{font-size:16px;flex-shrink:0;margin-top:1px;}
+    .bp{font-family:'Syne',sans-serif;font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;margin-bottom:3px;}
+    .bp.r{color:#e84545;}.bp.o{color:#f0a500;}.bp.b{color:#6e9ec8;}
+    .bt{font-family:'DM Sans',sans-serif;font-size:13px;color:#d4cfc8;line-height:1.5;}
+    .ctr{text-align:center;padding-top:40px;}
+    .rh{font-family:'DM Sans',sans-serif;font-size:14px;color:#666;line-height:1.6;margin-bottom:48px;}
+    .mic{width:120px;height:120px;border-radius:50%;background:#1a1a1a;border:3px solid #333;color:#fff;font-size:42px;cursor:pointer;display:flex;align-items:center;justify-content:center;margin:0 auto;transition:all .2s;}
+    .mic.rec{background:#e84545;border-color:#e84545;animation:pulse 1.5s infinite;}
+    .ml{font-family:'Syne',sans-serif;font-size:11px;color:#444;margin-top:18px;letter-spacing:1.5px;text-transform:uppercase;}
+    .spin{width:32px;height:32px;border:3px solid #c8a96e30;border-top:3px solid #c8a96e;border-radius:50%;animation:spin .8s linear infinite;margin:0 auto 12px;}
+    .pl{font-family:'Syne',sans-serif;font-size:12px;color:#666;letter-spacing:1.5px;text-transform:uppercase;text-align:center;padding-top:80px;}
+    .rb{background:#1a1a1a;border-radius:16px;padding:20px;border-left:3px solid #c8a96e;white-space:pre-wrap;font-family:'DM Sans',sans-serif;font-size:14px;color:#d4cfc8;line-height:1.7;min-height:200px;}
+    .sv{width:100%;margin-top:14px;padding:16px;border-radius:14px;border:none;background:#c8a96e;color:#111;font-family:'Syne',sans-serif;font-weight:800;font-size:13px;letter-spacing:1px;text-transform:uppercase;cursor:pointer;}
+    .note{background:#1a0000;border:2px solid #e84545;border-radius:14px;padding:14px 16px;margin-bottom:16px;}
+    .note-l{font-family:'Syne',sans-serif;font-size:10px;font-weight:800;color:#f0a500;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:5px;}
+    .note-t{font-family:'DM Sans',sans-serif;font-size:12px;color:#888;line-height:1.5;}
+    nav{position:fixed;bottom:0;left:0;right:0;background:#0d0d0d;border-top:1px solid #1e1e1e;display:flex;justify-content:space-around;padding:12px 0 28px;z-index:50;}
+    .ni{display:flex;flex-direction:column;align-items:center;gap:5px;opacity:.35;cursor:pointer;padding:0 14px;}
+    .ni.active{opacity:1;}
+    .ni-i{font-size:22px;}
+    .ni-l{font-family:'Syne',sans-serif;font-size:9px;font-weight:400;color:#fff;letter-spacing:.8px;text-transform:uppercase;}
+    .ni.active .ni-l{font-weight:800;color:#c8a96e;}
+    .ni.active.k .ni-l{color:#6e9ec8;}
+    .ov{position:fixed;inset:0;background:#111;display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:200;}
+    .ov.h{display:none;}
+  </style>
+</head>
+<body>
+
+<div class="ov h" id="ov"><div class="spin"></div><div style="font-family:'Syne',sans-serif;font-size:12px;color:#666;letter-spacing:1.5px;text-transform:uppercase;margin-top:12px;">Analysiere Projekte…</div></div>
+
+<!-- HOME -->
+<div class="screen active" id="s-home">
+  <div class="lbl a1" id="hdate"></div>
+  <div class="ttl a2">Guten Morgen 👋</div>
+  <div class="co-sw a3">
+    <button class="co-btn ae" id="be" onclick="setCo('ebbing')">EP · Ebbing</button>
+    <button class="co-btn" id="bk" onclick="setCo('kriwet')">KP · Kriwet</button>
+  </div>
+  <div class="a4">
+    <button class="big-btn" id="bfbtn" onclick="goBriefing()">
+      <div class="bb-icon">🔴</div>
+      <div class="bb-title">Tages-Briefing</div>
+      <div class="bb-sub">Was muss ich heute wissen?<br>Kritisches · Offenes · Warnungen</div>
+      <div class="bb-arr">→</div>
+    </button>
+    <div class="grid2">
+      <button class="card" onclick="go('protokoll')"><div class="ci">🎤</div><div class="ct">Gespräch protokollieren</div><div class="cs">Einsprechen → KI strukturiert</div></button>
+      <button class="card" onclick="go('meeting')"><div class="ci">🏗️</div><div class="ct">Meeting aufnehmen</div><div class="cs">Läuft still im Hintergrund</div></button>
+      <button class="card"><div class="ci">💬</div><div class="ct">WhatsApp importieren</div><div class="cs">Chat zuordnen & transkribieren</div></button>
+      <button class="card"><div class="ci">📧</div><div class="ct">Outlook</div><div class="cs">Projektgefiltert</div></button>
+    </div>
+    <div class="ind"><div class="dot de" id="cdot"></div><div class="ind-t">Aktiv: <span class="ind-n ne" id="cname">Ebbing Project GmbH</span></div></div>
+  </div>
+</div>
+
+<!-- BRIEFING -->
+<div class="screen" id="s-briefing">
+  <div class="topbar"><div><div class="lbl" id="bdate"></div><div style="font-family:'Syne',sans-serif;font-size:22px;font-weight:800;color:#fff;">Tages-Briefing</div></div><button class="back" onclick="go('home')">✕</button></div>
+  <div style="animation:fadeUp .35s ease .1s both;">
+    <div class="sl r">Kritisch · Sofort handeln</div>
+    <div class="bi r"><div class="be">⚡</div><div><div class="bp r">Zara München</div><div class="bt">Elektroplan fehlt seit 5 Tagen — fällig war 02.06.</div></div></div>
+    <div class="bi r" style="margin-bottom:20px;"><div class="be">🚨</div><div><div class="bp r">Peek & Cloppenburg</div><div class="bt">Übergabe in 3 Tagen — Bodenbelag noch nicht bestätigt.</div></div></div>
+    <div class="sl o">Achtung · Im Auge behalten</div>
+    <div class="bi o"><div class="be">⚠️</div><div><div class="bp o">H&M Köln</div><div class="bt">Bauzeitenplan: Überschneidung Trockenbau / Maler KW 25.</div></div></div>
+    <div class="bi o" style="margin-bottom:20px;"><div class="be">⚠️</div><div><div class="bp o">Zara München</div><div class="bt">Subunternehmer Elektro — seit 2 Tagen keine Rückmeldung.</div></div></div>
+    <div class="sl b">Offen · Noch ungeklärt</div>
+    <div class="bi b"><div class="be">📌</div><div><div class="bp b">Zara München</div><div class="bt">Nachtragsfrage vom 12.05. — keine Antwort vom AG.</div></div></div>
+    <div class="bi b"><div class="be">📌</div><div><div class="bp b">P&C Düsseldorf</div><div class="bt">Brandschutzfreigabe — zuständige Person noch nicht benannt.</div></div></div>
+  </div>
+</div>
+
+<!-- PROTOKOLL -->
+<div class="screen" id="s-protokoll">
+  <div class="topbar"><div style="font-family:'Syne',sans-serif;font-size:22px;font-weight:800;color:#fff;">Gespräch protokollieren</div><button class="back" onclick="resetProt()">✕</button></div>
+  <div id="pi" class="ctr"><div class="rh">Gespräch gerade beendet?<br>Kurz einsprechen — KI strukturiert den Rest.</div><button class="mic" id="pm" onclick="togProt()">🎤</button><div class="ml" id="pml">Tippen zum Starten</div></div>
+  <div id="pp" style="display:none;"><div class="pl">⚙️<br><br>KI strukturiert das Gespräch…</div></div>
+  <div id="pr" style="display:none;padding-top:10px;"><div class="rb" id="pt"></div><button class="sv" id="psv" style="display:none;" onclick="alert('Gespeichert ✓')">✓ Protokoll speichern</button></div>
+</div>
+
+<!-- MEETING -->
+<div class="screen" id="s-meeting">
+  <div class="topbar"><div style="font-family:'Syne',sans-serif;font-size:22px;font-weight:800;color:#fff;">Meeting aufnehmen</div><button class="back" onclick="stopMtg();go('home')">✕</button></div>
+  <div id="mi" class="ctr">
+    <div class="note"><div class="note-l">⚠️ Hinweis</div><div class="note-t">Kurz sagen: "Ich mach mir Notizen." Dann läuft alles rechtssicher.</div></div>
+    <div class="rh" style="margin-top:24px;">Aufnahme läuft still im Hintergrund.<br>Du kannst die App wechseln.</div>
+    <button class="mic" onclick="startMtg()">🏗️</button>
+    <div class="ml">Tippen zum Starten</div>
+  </div>
+  <div id="mr" style="display:none;text-align:center;padding-top:40px;">
+    <div style="display:inline-block;width:14px;height:14px;background:#e84545;border-radius:50%;animation:pulse 1.5s infinite;margin-bottom:20px;"></div>
+    <div style="font-family:'Syne',sans-serif;font-size:40px;font-weight:800;color:#fff;margin-bottom:6px;" id="mt">00:00</div>
+    <div style="font-family:'DM Sans',sans-serif;font-size:13px;color:#e84545;letter-spacing:1px;text-transform:uppercase;font-weight:700;margin-bottom:32px;">Aufnahme läuft</div>
+    <div style="font-family:'DM Sans',sans-serif;font-size:13px;color:#555;margin-bottom:48px;">App wechseln — Aufnahme läuft weiter.</div>
+    <button class="mic rec" onclick="stopMtg()">⏹</button>
+    <div class="ml" style="margin-top:16px;">Tippen zum Beenden</div>
+  </div>
+</div>
+
+<nav>
+  <div class="ni active" id="nh" onclick="go('home')"><div class="ni-i">🏠</div><div class="ni-l">Home</div></div>
+  <div class="ni"><div class="ni-i">📋</div><div class="ni-l">Projekte</div></div>
+  <div class="ni"><div class="ni-i">💬</div><div class="ni-l">Nachrichten</div></div>
+  <div class="ni"><div class="ni-i">⚙️</div><div class="ni-l">Einstellungen</div></div>
+</nav>
+
+<script>
+var co='ebbing',prec=false,psec=0,ptmr=null,pmr=null,mrec=false,msec=0,mtmr=null,mmr=null,tw=null;
+document.getElementById('hdate').textContent=new Date().toLocaleDateString('de-DE',{weekday:'long',day:'numeric',month:'long',year:'numeric'});
+document.getElementById('bdate').textContent=new Date().toLocaleDateString('de-DE',{weekday:'long',day:'numeric',month:'long'});
+
+function setCo(c){
+  co=c;
+  document.getElementById('be').className='co-btn'+(c==='ebbing'?' ae':'');
+  document.getElementById('bk').className='co-btn'+(c==='kriwet'?' ak':'');
+  document.getElementById('bfbtn').className='big-btn'+(c==='kriwet'?' k':'');
+  document.getElementById('cdot').className='dot '+(c==='ebbing'?'de':'dk');
+  var n=document.getElementById('cname');
+  n.className='ind-n '+(c==='ebbing'?'ne':'nk');
+  n.textContent=c==='ebbing'?'Ebbing Project GmbH':'Kriwet Projektmanagement GmbH';
+  document.getElementById('nh').className='ni active'+(c==='kriwet'?' k':'');
+}
+
+function go(id){
+  document.querySelectorAll('.screen').forEach(function(s){s.classList.remove('active');});
+  document.getElementById('s-'+id).classList.add('active');
+  document.querySelectorAll('.ni').forEach(function(n){n.classList.remove('active');});
+  if(id==='home')document.getElementById('nh').classList.add('active');
+}
+
+function goBriefing(){
+  document.getElementById('ov').classList.remove('h');
+  setTimeout(function(){document.getElementById('ov').classList.add('h');go('briefing');},1500);
+}
+
+function togProt(){if(!prec)startProt();else stopProt();}
+
+function startProt(){
+  var ok=function(){
+    prec=true;psec=0;
+    var m=document.getElementById('pm');m.classList.add('rec');m.textContent='⏹';
+    ptmr=setInterval(function(){psec++;var mm=String(Math.floor(psec/60)).padStart(2,'0'),ss=String(psec%60).padStart(2,'0');document.getElementById('pml').textContent=mm+':'+ss+' · Tippen zum Beenden';},1000);
+  };
+  navigator.mediaDevices.getUserMedia({audio:true}).then(function(s){pmr=new MediaRecorder(s);pmr.start();ok();}).catch(ok);
+}
+
+function stopProt(){
+  clearInterval(ptmr);
+  if(pmr){try{pmr.stop();pmr.stream.getTracks().forEach(function(t){t.stop();});}catch(e){}}
+  prec=false;
+  document.getElementById('pi').style.display='none';
+  document.getElementById('pp').style.display='block';
+  setTimeout(function(){
+    document.getElementById('pp').style.display='none';
+    document.getElementById('pr').style.display='block';
+    var now=new Date().toLocaleTimeString('de-DE',{hour:'2-digit',minute:'2-digit'});
+    var txt='Gespräch mit: Thomas Berger (Elektro-Sub)\nDatum: Heute · '+now+' Uhr\n\nEntschieden:\n• Elektroplan bis Freitag 12:00 Uhr\n• Nachtragsangebot kommt separat\n\nOffen:\n• Wer gibt intern Freigabe? → Marcus klären\n• Terminverschiebung KW 26 unklar\n\nProjekt: Zara München';
+    var box=document.getElementById('pt');box.textContent='';var i=0;
+    tw=setInterval(function(){i++;box.textContent=txt.slice(0,i);if(i>=txt.length){clearInterval(tw);document.getElementById('psv').style.display='block';}},14);
+  },2000);
+}
+
+function resetProt(){
+  clearInterval(ptmr);clearInterval(tw);
+  if(pmr){try{pmr.stop();pmr.stream.getTracks().forEach(function(t){t.stop();});}catch(e){}}
+  prec=false;psec=0;
+  document.getElementById('pi').style.display='block';
+  document.getElementById('pp').style.display='none';
+  document.getElementById('pr').style.display='none';
+  var m=document.getElementById('pm');m.classList.remove('rec');m.textContent='🎤';
+  document.getElementById('pml').textContent='Tippen zum Starten';
+  go('home');
+}
+
+function startMtg(){
+  var ok=function(){
+    mrec=true;msec=0;
+    document.getElementById('mi').style.display='none';
+    document.getElementById('mr').style.display='block';
+    mtmr=setInterval(function(){msec++;var mm=String(Math.floor(msec/60)).padStart(2,'0'),ss=String(msec%60).padStart(2,'0');document.getElementById('mt').textContent=mm+':'+ss;},1000);
+  };
+  navigator.mediaDevices.getUserMedia({audio:true}).then(function(s){mmr=new MediaRecorder(s);mmr.start();ok();}).catch(ok);
+}
+
+function stopMtg(){
+  clearInterval(mtmr);
+  if(mmr){try{mmr.stop();mmr.stream.getTracks().forEach(function(t){t.stop();});}catch(e){}}
+  mrec=false;msec=0;
+  document.getElementById('mi').style.display='block';
+  document.getElementById('mr').style.display='none';
+  document.getElementById('mt').textContent='00:00';
+}
+</script>
+</body>
+</html>

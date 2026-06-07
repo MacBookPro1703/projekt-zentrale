@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  <meta name="apple-mobile-web-app-title" content="Projekt-Zentrale" />
+  <meta name="theme-color" content="#111111" />
+  <link rel="manifest" href="manifest.json" />
+  <link rel="apple-touch-icon" href="icon-192.png" />
+  <title>Projekt-Zentrale</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body {
+      height: 100%;
+      background: #111;
+      color: #fff;
+      font-family: 'DM Sans', sans-serif;
+      overscroll-behavior: none;
+      -webkit-tap-highlight-color: transparent;
+    }
+    #app { height: 100%; }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(16px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+    @keyframes pulse {
+      0%,100% { box-shadow: 0 0 0 12px rgba(232,69,69,0.15); }
+      50%      { box-shadow: 0 0 0 22px rgba(232,69,69,0.04); }
+    }
+    @keyframes blink {
+      0%,100% { opacity:1; } 50% { opacity:0; }
+    }
+
+    .fade1 { animation: fadeUp 0.4s ease 0.05s both; }
+    .fade2 { animation: fadeUp 0.4s ease 0.15s both; }
+    .fade3 { animation: fadeUp 0.4s ease 0.25s both; }
+    .fade4 { animation: fadeUp 0.4s ease 0.35s both; }
+    .fade5 { animation: fadeUp 0.4s ease 0.45s both; }
+
+    button { -webkit-appearance: none; appearance: none; }
+
+    /* Scrollable main area */
+    .main-scroll {
+      overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
+      padding-bottom: 100px;
+    }
+
+    /* Recording indicator dot in status area */
+    .rec-dot {
+      display: inline-block;
+      width: 8px; height: 8px;
+      background: #e84545;
+      border-radius: 50%;
+      animation: pulse 1.2s infinite;
+      margin-right: 6px;
+    }
+  </style>
+</head>
+<body>
+  <div id="app"></div>
+  <script src="app.js"></script>
+  <script>
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('/sw.js');
+    }
+  </script>
+</body>
+</html>

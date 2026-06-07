@@ -1,9 +1,9 @@
 const CACHE_NAME = 'projekt-zentrale-v1';
 const ASSETS = [
-  '/',
-  '/index.html',
-  '/app.js',
-  '/manifest.json'
+  './',
+  './index.html',
+  './app.js',
+  './manifest.json'
 ];
 
 self.addEventListener('install', e => {
